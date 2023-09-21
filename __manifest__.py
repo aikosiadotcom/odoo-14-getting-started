@@ -4,5 +4,7 @@
     "depends":[
         'base'
     ],
+    "data":[
+    ],
     "application": True
 }
