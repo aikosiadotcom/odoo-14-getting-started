@@ -32,6 +32,14 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(default="new", selection=[('new','New'),('offer_received','Offer Receive'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')],readonly=True)
 
+    _sql_constraints = [
+            ('positive_expected_price', 'CHECK (expected_price >= 0)', 'Expected Price must be positive!'),
+            ('positive_selling_price', 'CHECK (selling_price >= 0)', 'Selling Price must be positive!'),
+            # The line `('unique_property_tag_ids', 'unique (property_tag_ids)', 'Tag must unique')`
+            # is defining a SQL constraint on the `estate.property` model.
+            ('unique_property_tag_ids', 'unique (property_tag_ids)', 'Tag must unique'),
+    ]
+
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -61,4 +69,9 @@ class EstateProperty(models.Model):
             else:
                 record.state = "sold"
         return True
-        
+    
+    @api.constrains("garden_area")
+    def _check_garden_area(self):
+        for record in self:
+            if(record.garden_area > 2000):
+                raise ValidationError("garden area cannot more than 2000")
