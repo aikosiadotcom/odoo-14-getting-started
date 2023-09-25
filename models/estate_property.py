@@ -29,7 +29,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
 
     active = fields.Boolean(default=True)
-    state = fields.Selection(default="new", selection=[('new','New'),('offer_received','Offer Receive'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')])
+    state = fields.Selection(default="new", selection=[('new','New'),('offer_received','Offer Receive'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')],readonly=True)
 
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):
@@ -44,3 +44,14 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def btn_cancel(self):
+        for record in self:
+            record.state = "canceled"
+        return True
+    
+    def btn_sold(self):
+        for record in self:
+            record.state = "sold"
+        return True
+        
