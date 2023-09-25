@@ -36,6 +36,7 @@
             <form>
                 <sheet>
                     <field name="name"/>
+                    <field name="property_tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="property_type_id"/>
