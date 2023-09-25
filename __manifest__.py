@@ -6,7 +6,8 @@
     ],
     "data":[
         "security/ir.model.access.csv",
-        "views/estate_menus.xml"
+        "views/estate_property.xml",
+        "views/estate_property_type.xml"
     ],
     "application": True
 }
