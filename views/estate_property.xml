@@ -42,6 +42,7 @@
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="create_date" string="Available From"/>
+                            <field name="total_area" string="Total Area"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
