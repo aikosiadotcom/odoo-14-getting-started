@@ -28,3 +28,9 @@ class EstatePropertyOffer(models.Model):
                 record.validity = abs((fields.Datetime.today()-record.validity).days)
             else:
                 record.validity = abs(((record.create_date-record.date_deadline).days))
+
+    def action_accept(self):
+        return True
+    
+    def action_reject(self):
+        return True

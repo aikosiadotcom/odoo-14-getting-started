@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -47,11 +48,17 @@ class EstateProperty(models.Model):
 
     def btn_cancel(self):
         for record in self:
-            record.state = "canceled"
+            if(record.state == "sold"):
+                raise ValidationError("its already sold. so you can't cancel it")
+            else:
+                record.state = "canceled"
         return True
     
     def btn_sold(self):
         for record in self:
-            record.state = "sold"
+            if(record.state == "canceled"):
+                raise ValidationError("its already cancel. so you can't sell it")
+            else:
+                record.state = "sold"
         return True
         
