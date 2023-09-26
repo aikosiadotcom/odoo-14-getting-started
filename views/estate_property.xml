@@ -25,6 +25,7 @@
                         <field name="name"/>
                     </tree>
                 </field>
+                <field name="state"/>
                 <field name="postcode"/>
                 <field name="property_tag_ids" string="Tags" widget="many2many_tags" options="{'create': False,'color_field': 'color'}"/>
                 <field name="bedrooms"/>
@@ -79,7 +80,7 @@
                         </page>
 
                         <page string="Offer">
-                            <field name="property_offer_ids" options="{'create': [('state','in',['new'])]}"/>
+                            <field name="property_offer_ids" options="{'create': [('state','not in',['canceled','sold', 'offer_accepted'])]}"/>
                         </page>
 
                          <page string="Other Info">

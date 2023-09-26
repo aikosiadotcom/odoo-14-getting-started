@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -37,3 +38,14 @@ class EstatePropertyOffer(models.Model):
     
     def action_reject(self):
         return True
+
+    @api.model 
+    def create(self, vals):
+        recordset = self.env["estate.property.offer"].search(args=[('price','>',vals['price'])],order="price desc")
+        if(len(recordset) > 0):
+            raise ValidationError("Sudah ada offer yang lebih besar")
+        
+        rec = self.env['estate.property'].browse(vals['property_id'])
+        rec.update({'state':'offer_received'})
+        
+        return super(EstatePropertyOffer,self).create(vals)

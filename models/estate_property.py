@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, AccessError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -76,3 +76,10 @@ class EstateProperty(models.Model):
         for record in self:
             if(record.garden_area > 2000):
                 raise ValidationError("garden area cannot more than 2000")
+
+    def unlink(self):
+        for record in self:
+            if(record.state != 'new' and record.state != 'canceled'):
+                raise AccessError("You can't delete a record if not new or canceled")
+        
+        return super().unlink()
